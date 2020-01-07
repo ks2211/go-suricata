@@ -45,15 +45,15 @@ func (s *Socket) DoCommand(command string, args interface{}) (*Response, error) 
 		return nil, err
 	}
 	// get response
-	response, err := s.GetResponseFromRead(command)
+	response, err := s.ReadResponse(command)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-// GetResponseFromRead gets response from the tcp socket read
-func (s *Socket) GetResponseFromRead(commandName string) (*Response, error) {
+// ReadResponse gets response from the tcp socket read
+func (s *Socket) ReadResponse(commandName string) (*Response, error) {
 	// read from socket
 	response, err := s.receive()
 	if err != nil {

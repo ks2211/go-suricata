@@ -9,7 +9,7 @@ type Client interface {
 
 	// Helper methods
 	DoCommand(string, interface{}) (*Response, error)
-	GetResponseFromRead(string) (*Response, error)
+	ReadResponse(string) (*Response, error)
 	SendMessage(string, interface{}) error
 	write([]byte) (int, error)
 	receive() (*Response, error)
