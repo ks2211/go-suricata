@@ -45,13 +45,13 @@ func main() {
     }
     // connect the socket and defer clsoe
     if err := s.ConnectSocket(); err != nil {
-		log.Fatalf("error connect %v", err)
-	}
+        log.Fatalf("error connect %v", err)
+    }
     defer s.Close()
     // use the client to run command methods
     commands, err := s.GetCommandList()
-	if err != nil {
-		log.Fatalf("Error command list %v", err)
+    if err != nil {
+        log.Fatalf("Error command list %v", err)
     }
     log.Println("COMMANDS", commands)
     runningMode, err := s.RunningModeCommand()
