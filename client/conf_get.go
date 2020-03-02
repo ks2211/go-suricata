@@ -1,12 +1,7 @@
-package v3
+package client
 
 import (
 	"encoding/json"
-	"github.com/ks2211/go-suricata/client"
-)
-
-const (
-	confGetCommand = "conf-get"
 )
 
 // ConfGetRequest holds the config key item for conf-get command
@@ -15,7 +10,7 @@ type ConfGetRequest struct {
 }
 
 // ConfGetCommand performs a fetch on a config item using a key string, only returns string/int/bool values
-func (s *SocketV3) ConfGetCommand(configItem string) (string, error) {
+func (s *socket) ConfGetCommand(configItem string) (string, error) {
 	// create and marshal the "conf-get" socket message with the config item struct
 	response, err := s.DoCommand(confGetCommand, ConfGetRequest{
 		configItem,
@@ -23,8 +18,8 @@ func (s *SocketV3) ConfGetCommand(configItem string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// unmarshal into the reload rules response string
-	var configResp client.ConfGetResponse
+	// unmarshal into the conf get response string
+	var configResp ConfGetResponse
 	if err := json.Unmarshal(response.Message, &configResp); err != nil {
 		return "", err
 	}

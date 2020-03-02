@@ -21,8 +21,8 @@ func TestCreateSocket(t *testing.T) {
 		if err != nil {
 			t.Fatalf("error creating socket client %v", err)
 		}
-		if sock.path != tt.expectedPath {
-			t.Fatalf("expected path %v got %v", tt.expectedPath, sock.path)
+		if sock.Path() != tt.expectedPath {
+			t.Fatalf("expected path %v got %v", tt.expectedPath, sock.Path())
 		}
 	}
 }
@@ -47,9 +47,6 @@ func TestDoCommand(t *testing.T) {
 	}
 	s, err := CreateSocket("/var/run/suricata-command.socket")
 	if err != nil {
-		t.Fatalf("error create socket client %v", err)
-	}
-	if err := s.ConnectSocket(); err != nil {
 		t.Fatalf("error create socket client %v", err)
 	}
 	defer s.Close()

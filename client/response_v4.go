@@ -1,6 +1,4 @@
-package v4
-
-import "github.com/ks2211/go-suricata/client"
+package client
 
 // MemCapListResponse is message from memcap-list
 type MemCapListResponse struct {
@@ -14,7 +12,7 @@ type MemCapShowResponse struct {
 }
 
 // MemCapSetResponse is message from memcap-set for a specific memcat
-type MemCapSetResponse client.InformationResponse
+type MemCapSetResponse InformationResponse
 
 // String is a helper method to turn go type into struct
 func (m MemCapSetResponse) String() string {
@@ -22,7 +20,7 @@ func (m MemCapSetResponse) String() string {
 }
 
 // ReopenLogFilesResponse is message from reopen-log-files command
-type ReopenLogFilesResponse client.InformationResponse
+type ReopenLogFilesResponse InformationResponse
 
 // String is a helper method to turn go type into struct
 func (r ReopenLogFilesResponse) String() string {
@@ -30,7 +28,7 @@ func (r ReopenLogFilesResponse) String() string {
 }
 
 // RulesetReloadRulesResponse is message from ruleset-reload-rules command
-type RulesetReloadRulesResponse client.InformationResponse
+type RulesetReloadRulesResponse InformationResponse
 
 // String is a helper method to turn go type into struct
 func (r RulesetReloadRulesResponse) String() string {

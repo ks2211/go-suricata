@@ -1,4 +1,4 @@
-package v3
+package client
 
 import (
 	"reflect"
@@ -6,11 +6,8 @@ import (
 )
 
 func TestReloadRulesCommand(t *testing.T) {
-	s, err := NewSocketV3(DefaultSocketPathV3)
+	s, err := CreateSocket(DefaultSocketPathV3)
 	if err != nil {
-		t.Fatalf("error create socket client %v", err)
-	}
-	if err := s.ConnectSocket(); err != nil {
 		t.Fatalf("error create socket client %v", err)
 	}
 	defer s.Close()

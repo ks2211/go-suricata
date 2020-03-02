@@ -1,17 +1,11 @@
-package v4
+package client
 
 import (
 	"encoding/json"
 )
 
-// Constants
-const (
-	addHostBitCommand    string = "add-hostbit"
-	removeHostBitCommand string = "remove-hostbit"
-	listHostBitCommand   string = "list-hostbit"
-)
-
 // AddHostBitRequest holds the ip, bit name and expiration for adding a host bit
+// Not used in v3
 type AddHostBitRequest struct {
 	IPAddr  string `json:"ipaddress"`
 	BitName string `json:"hostbit"`
@@ -19,18 +13,21 @@ type AddHostBitRequest struct {
 }
 
 // RemoveHostBit holds the ip, bit name for removing a host bit
+// Not used in v3
 type RemoveHostBit struct {
 	IPAddr  string `json:"ip"`
 	BitName string `json:"hostbit"`
 }
 
 // ListHostBitRequest holds the host for list hostbit command
+// Not used in v3
 type ListHostBitRequest struct {
 	IPAddr string `json:"ipaddress"`
 }
 
 // AddHostBitCommand adds host bit
-func (s *SocketV4) AddHostBitCommand(ipAddr, bitName string, expire int) (string, error) {
+// Not implemented in v3
+func (s *socket) AddHostBitCommand(ipAddr, bitName string, expire int) (string, error) {
 	// create and marshal the "add-hostbit" socket message with
 	response, err := s.DoCommand(addHostBitCommand, AddHostBitRequest{
 		ipAddr,
@@ -49,7 +46,8 @@ func (s *SocketV4) AddHostBitCommand(ipAddr, bitName string, expire int) (string
 }
 
 // RemoveHostBitCommand does "remove-hostbit"
-func (s *SocketV4) RemoveHostBitCommand(ipAddr, bitName string) (string, error) {
+// Not implemented in v3
+func (s *socket) RemoveHostBitCommand(ipAddr, bitName string) (string, error) {
 	// create and marshal the "remove-hostbit" socket message with
 	response, err := s.DoCommand(removeHostBitCommand, RemoveHostBit{
 		ipAddr,
@@ -67,18 +65,19 @@ func (s *SocketV4) RemoveHostBitCommand(ipAddr, bitName string) (string, error) 
 }
 
 // ListHostBitCommand does "list-hostbit"
-func (s *SocketV4) ListHostBitCommand(ipAddr string) (ListHostBitsResponse, error) {
+// Not implemented in v3
+func (s *socket) ListHostBitCommand(ipAddr string) (*ListHostBitsResponse, error) {
 	// create and marshal the "memcap-show" socket message with
 	response, err := s.DoCommand(listHostBitCommand, ListHostBitRequest{
 		ipAddr,
 	})
 	if err != nil {
-		return ListHostBitsResponse{}, err
+		return nil, err
 	}
 	// unmarshal into the iface stat struct
-	var hostbits ListHostBitsResponse
+	var hostbits *ListHostBitsResponse
 	if err := json.Unmarshal(response.Message, &hostbits); err != nil {
-		return ListHostBitsResponse{}, err
+		return nil, err
 	}
 	return hostbits, nil
 }

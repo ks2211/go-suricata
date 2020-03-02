@@ -1,15 +1,12 @@
-package v3
+package client
 
 import (
 	"testing"
 )
 
 func TestCommandListCommand(t *testing.T) {
-	s, err := NewSocketV3(DefaultSocketPathV3)
+	s, err := CreateSocket(DefaultSocketPathV3)
 	if err != nil {
-		t.Fatalf("error create socket client %v", err)
-	}
-	if err := s.ConnectSocket(); err != nil {
 		t.Fatalf("error create socket client %v", err)
 	}
 	defer s.Close()
@@ -38,8 +35,8 @@ func TestCommandListCommand(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error doing command-list command %v", err)
 	}
-	if len(commands) == 0 || len(commands) != len(expectedOutput) {
-		t.Fatalf("error command list is empty or does not match expected, expected %v, got %v", len(expectedOutput), len(commands))
+	if len(commands.Commands) == 0 || len(commands.Commands) != len(expectedOutput) {
+		t.Fatalf("error command list is empty or does not match expected, expected %v, got %v", len(expectedOutput), len(commands.Commands))
 	}
 
 }

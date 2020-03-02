@@ -1,4 +1,4 @@
-package v4
+package client
 
 import (
 	"encoding/json"
@@ -6,16 +6,10 @@ import (
 	"strings"
 )
 
-// Constants
-const (
-	memcapSetCommand  string = "memcap-set"
-	memcapShowCommand string = "memcap-show"
-	memcapListCommand string = "memcap-list"
-)
-
 // MemCapSetRequest is the json object needed for memcap-set
 // It requires a name field of the memcap
 // It also requires the memcap value which can be unlimited or > "6mb" (string)
+// Not used in v3
 type MemCapSetRequest struct {
 	Name  string      `json:"config"`
 	Value interface{} `json:"memcap"`
@@ -23,13 +17,14 @@ type MemCapSetRequest struct {
 
 // MemCapShowRequest is the json object needed for memcap-show
 // It requires a name field of the memcap
+// Not used in v3
 type MemCapShowRequest struct {
 	Name string `json:"config"`
 }
 
 // MemCapSetCommand sets memcap
-func (s *SocketV4) MemCapSetCommand(memcapName, memcapValue interface{}) (string, error) {
-	// TODO validate the memcap value--can be "unlimited" or > 6mb
+// Not implemented in v3
+func (s *socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, error) {
 	if unlimited, ok := memcapValue.(string); ok {
 		if strings.ToLower(unlimited) != "unlimited" {
 			return "", errors.New("only unlimited can be passed in if passing string memcap value")
@@ -55,24 +50,26 @@ func (s *SocketV4) MemCapSetCommand(memcapName, memcapValue interface{}) (string
 }
 
 // MemCapShowCommand does "memcap-show"
-func (s *SocketV4) MemCapShowCommand(memcapName string) (MemCapShowResponse, error) {
+// Not implemented in v3
+func (s *socket) MemCapShowCommand(memcapName string) (*MemCapShowResponse, error) {
 	// create and marshal the "memcap-show" socket message with
 	response, err := s.DoCommand(memcapShowCommand, MemCapShowRequest{
 		Name: memcapName,
 	})
 	if err != nil {
-		return MemCapShowResponse{}, err
+		return nil, err
 	}
 	// unmarshal into the iface stat struct
-	var memcapShow MemCapShowResponse
+	var memcapShow *MemCapShowResponse
 	if err := json.Unmarshal(response.Message, &memcapShow); err != nil {
-		return MemCapShowResponse{}, err
+		return nil, err
 	}
 	return memcapShow, nil
 }
 
 // MemCapListCommand does "memcap-list"
-func (s *SocketV4) MemCapListCommand() ([]MemCapListResponse, error) {
+// Not implemented in v3
+func (s *socket) MemCapListCommand() ([]MemCapListResponse, error) {
 	// create and marshal the "memcap-show" socket message with the ifaceStatRequest arg
 	response, err := s.DoCommand(memcapListCommand, nil)
 	if err != nil {

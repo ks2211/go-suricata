@@ -28,28 +28,21 @@ go get github.com/ks2211/go-suricata
 ```go
 package main
 
-// import the specific client library you need
 import (
-    "github.com/ks2211/go-suricata/client/v3"
+    "github.com/ks2211/go-suricata/client"
     "log"
-    //v4 "github.com/ks2211/go-suricata/client/v4"
-    //v5 "github.com/ks2211/go-suricata/client/v5"
 )
 
 func main() {
-    // create the client
-    s, err := socket.NewSocketV3(v3.DefaultSocketPathV3)
-    //s, err := v4.NewSocketV4(v4.DefaultSocketPathV4)
+    // create the client passing the path to the socket
+    // defaults are provided
+    s, err := client.NewSocket("/path/to/socket")
     if err != nil {
         log.Fatalf("Error conn %v", err)
     }
-    // connect the socket and defer clsoe
-    if err := s.ConnectSocket(); err != nil {
-        log.Fatalf("error connect %v", err)
-    }
     defer s.Close()
     // use the client to run command methods
-    commands, err := s.GetCommandList()
+    commands, err := s.CommandListCommand()
     if err != nil {
         log.Fatalf("Error command list %v", err)
     }
@@ -82,13 +75,11 @@ func main() {
 
 The way the library/client is set up:
 
-* The client directory holds the client connection and base command methods (sending, receving, parsing)
+* The socket client holds a net.Conn with base methods to send/receive messages from the socket
 
-* Suricata 4 implements all of the methods from Suricata 3 (and subsequently Suricata 5 implements all methods from both 3 and 4)
+* All v3, v4, and v5 commands are methods of the Socket client. You create 1 client regardless of version, commands not available in a specific version will return an error
 
-* If you are using Suricata 4 or 5, you can import those packages and call the client constructor methods (e.g `NewSocketV4()` or `NewSocketV5()`)
-
-    * This will automatically implement the v3 commands as well give you access to the v4 or v5 commands
+    * E.g If you are running Suricata v3 but attempt to use the hostbit or memcap commands, they will return an error 
 
 * The clients implements most (if not all) commands for that specific Suricata version. The command methods that are not implemented by the library, the user has the option of using the `DoCommand` method to run the command manually.
 
@@ -149,10 +140,16 @@ Please make sure to update tests as appropriate.
 
 * Testing (In progress)
 
-* Tenant and Pcap Commands
+* Tenant commands in V3
+
+* DumpCounters in V3 has a large response, figure out how to handle that
+
+* V4 memcap commands-validate setmampcap
 
 * V5 Commands
 
+* PCAP command support
+
 * General cleanup (idomatic patterns, gofmt, lint, etc)
 
-* Fill this in
+* Look into codegen since a lot of repeated/duplicate code

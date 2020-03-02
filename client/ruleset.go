@@ -1,20 +1,12 @@
-package v4
+package client
 
 import (
 	"encoding/json"
 )
 
-// Constants
-const (
-	rulesetReoladRulesCommand       string = "ruleset-reload-rules"
-	rulesetReloadNonBlockingCommand string = "ruleset-reload-nonblocking"
-	rulesetReloadTimeCommand        string = "ruleset-reload-time"
-	rulesetStatsCommand             string = "ruleset-stats"
-	rulesetFailedRulesCommand       string = "ruleset-failed-rules"
-)
-
 // RulesetReloadRulesCommand does ruleset reload
-func (s *SocketV4) RulesetReloadRulesCommand() (string, error) {
+// Not implemented in v3
+func (s *socket) RulesetReloadRulesCommand() (string, error) {
 	// create and marshal the "ruleset-reload-rules" socket message with
 	response, err := s.DoCommand(rulesetReoladRulesCommand, nil)
 	if err != nil {
@@ -29,7 +21,8 @@ func (s *SocketV4) RulesetReloadRulesCommand() (string, error) {
 }
 
 // RulesetReloadNonBlockingCommand does ruleset reload without blocking
-func (s *SocketV4) RulesetReloadNonBlockingCommand() (string, error) {
+// Not implemented in v3
+func (s *socket) RulesetReloadNonBlockingCommand() (string, error) {
 	// create and marshal the "ruleset-reload-nonblocking" socket message with
 	response, err := s.DoCommand(rulesetReloadNonBlockingCommand, nil)
 	if err != nil {
@@ -44,7 +37,8 @@ func (s *SocketV4) RulesetReloadNonBlockingCommand() (string, error) {
 }
 
 // RulesetReloadTimeCommand gets reload time of ruleset reload
-func (s *SocketV4) RulesetReloadTimeCommand() ([]RulesetReloadTimeResponse, error) {
+// Not implemented in v3
+func (s *socket) RulesetReloadTimeCommand() ([]RulesetReloadTimeResponse, error) {
 	// create and marshal the "ruleset-reload-time" socket message with
 	response, err := s.DoCommand(rulesetReloadTimeCommand, nil)
 	if err != nil {
@@ -59,7 +53,8 @@ func (s *SocketV4) RulesetReloadTimeCommand() ([]RulesetReloadTimeResponse, erro
 }
 
 // RulesetStatsCommand gets ruleset stats
-func (s *SocketV4) RulesetStatsCommand() ([]RulesetStatsResponse, error) {
+// Not implemented in v3
+func (s *socket) RulesetStatsCommand() ([]RulesetStatsResponse, error) {
 	// create and marshal the "ruleset-stats" socket message with
 	response, err := s.DoCommand(rulesetStatsCommand, nil)
 	if err != nil {
@@ -74,7 +69,8 @@ func (s *SocketV4) RulesetStatsCommand() ([]RulesetStatsResponse, error) {
 }
 
 // RulesetFailedRulesCommand does ruleset failed rules
-func (s *SocketV4) RulesetFailedRulesCommand() ([]RulesetFailedRulesResponse, error) {
+// Not implemented in v3
+func (s *socket) RulesetFailedRulesCommand() ([]RulesetFailedRulesResponse, error) {
 	// create and marshal the "ruleset-failed-rules" socket message with
 	response, err := s.DoCommand(rulesetFailedRulesCommand, nil)
 	if err != nil {

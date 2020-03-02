@@ -1,17 +1,12 @@
-package v3
+package client
 
 import (
 	"testing"
-
-	"github.com/ks2211/go-suricata/client"
 )
 
 func TestIFaceListCommand(t *testing.T) {
-	s, err := NewSocketV3(DefaultSocketPathV3)
+	s, err := CreateSocket(DefaultSocketPathV3)
 	if err != nil {
-		t.Fatalf("error create socket client %v", err)
-	}
-	if err := s.ConnectSocket(); err != nil {
 		t.Fatalf("error create socket client %v", err)
 	}
 	defer s.Close()
@@ -33,16 +28,13 @@ func TestIFaceListCommand(t *testing.T) {
 }
 
 func TestIFaceStatCommand(t *testing.T) {
-	s, err := NewSocketV3(DefaultSocketPathV3)
+	s, err := CreateSocket(DefaultSocketPathV3)
 	if err != nil {
-		t.Fatalf("error create socket client %v", err)
-	}
-	if err := s.ConnectSocket(); err != nil {
 		t.Fatalf("error create socket client %v", err)
 	}
 	defer s.Close()
 
-	expectedOutput := client.IFaceStatResponse{
+	expectedOutput := IFaceStatResponse{
 		Drop:             0,
 		InvalidChecksums: 1,
 		Pkts:             -1,
