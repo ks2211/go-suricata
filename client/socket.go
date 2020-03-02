@@ -15,7 +15,8 @@ import (
 
 // Errors
 var (
-	ErrUnimplemented error = errors.New("error unimplemented in library")
+	ErrUnimplemented  error = errors.New("error unimplemented in library")
+	ErrUnknownCommand error = errors.New("Unknown command")
 )
 
 // Constants
