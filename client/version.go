@@ -1,21 +1,20 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	version string = "version"
 )
 
-// VersionCommand gets version of suricata and sets the version in the pointer
-func (s *socket) VersionCommand() (string, error) {
-	// create and marshal the "version" socket message with no args
-	response, err := s.DoCommand(versionCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the version response string
-	var version VersionResponse
-	if err := json.Unmarshal(response.Message, &version); err != nil {
-		return "", err
-	}
+// VersionResponse is response from "version"
+type VersionResponse StringResponse
 
-	return version.String(), nil
+// String is a helper method to convert a go type into string
+func (v VersionResponse) String() string {
+	return string(v)
+}
+
+// VersionCommand gets version of suricata and sets the version in the pointer
+func (s *Socket) VersionCommand() (string, error) {
+	versionResp := new(VersionResponse)
+	err := s.DoCommand(version, nil, versionResp)
+	return versionResp.String(), err
 }

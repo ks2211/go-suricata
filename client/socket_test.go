@@ -1,7 +1,6 @@
 package client
 
 import (
-	"encoding/json"
 	"testing"
 )
 
@@ -51,13 +50,10 @@ func TestDoCommand(t *testing.T) {
 	}
 	defer s.Close()
 	for _, tt := range cases {
-		resp, err := s.DoCommand(tt.cmdName, nil)
+		respMessage := new(StringResponse)
+		err := s.DoCommand(tt.cmdName, nil, respMessage)
 		if err != nil {
 			t.Fatalf("error doing command %v, error %v", tt.cmdName, err)
-		}
-		var respMessage InformationResponse
-		if err := json.Unmarshal(resp.Message, &respMessage); err != nil {
-			t.Fatalf("error reading response message for command %v, error %v", tt.cmdName, err)
 		}
 		if respMessage.String() != tt.output {
 			t.Fatalf("expected %v, got %v", tt.output, respMessage.String())

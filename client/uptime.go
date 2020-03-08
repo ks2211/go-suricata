@@ -1,21 +1,15 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	uptime string = "uptime"
 )
 
-// UptimeCommand gets uptime of suricata
-func (s *socket) UptimeCommand() (int, error) {
-	// create and marshal the "uptime" socket message with no args
-	response, err := s.DoCommand(uptimeCommand, nil)
-	if err != nil {
-		return 0, err
-	}
-	// unmarshal into the uptime response string
-	var uptime UptimeResponse
-	if err := json.Unmarshal(response.Message, &uptime); err != nil {
-		return 0, err
-	}
+// UptimeResponse is response from "uptime"
+type UptimeResponse int
 
-	return int(uptime), nil
+// UptimeCommand gets uptime of suricata
+func (s *Socket) UptimeCommand() (int, error) {
+	uptimeResp := new(UptimeResponse)
+	err := s.DoCommand(uptime, nil, uptimeResp)
+	return int(*uptimeResp), err
 }

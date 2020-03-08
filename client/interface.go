@@ -1,14 +1,14 @@
 package client
 
 // Socket is a interface for all base suricata (v3) commands
-type Socket interface {
+type SocketIFace interface {
 	// Connection helpers
 	Close()
 	Dial() error
 
 	// Helper methods
 	Path() string
-	DoCommand(string, interface{}) (*Response, error)
+	DoCommand(string, interface{}, interface{}) error
 	ReadResponse(string) (*Response, error)
 	SendMessage(string, interface{}) error
 	write([]byte) (int, error)
@@ -17,10 +17,11 @@ type Socket interface {
 	// v3
 	CaptureModeCommand() (string, error)
 	CommandListCommand() (*CommandListResponse, error)
-	ConfGetCommand(string) (string, error)
+	ConfGetCommand(ConfGetRequest) (string, error)
 	DumpCountersCommand() (*DumpCountersResponse, error)
 	IFaceListCommand() (*IFaceListResponse, error)
-	IFaceStatCommand(string) (*IFaceStatResponse, error)
+	IFaceStatCommand(IFaceStatRequest) (*IFaceStatResponse, error)
+	RegisterTenantCommand(RegisterTenantRequest) (*RegisterTenantResposne, error)
 	ReloadRulesCommand() (string, error)
 	RunningModeCommand() (string, error)
 	ShutdownCommand() (string, error)
@@ -28,16 +29,19 @@ type Socket interface {
 	VersionCommand() (string, error)
 
 	// v4
-	AddHostBitCommand(string, string, int) (string, error)
-	ListHostBitCommand(string) (*ListHostBitsResponse, error)
+	AddHostBitCommand(AddHostBitRequest) (string, error)
+	ListHostBitCommand(ListHostBitRequest) (*ListHostBitsResponse, error)
 	MemCapSetCommand(interface{}, interface{}) (string, error)
-	MemCapShowCommand(string) (*MemCapShowResponse, error)
-	MemCapListCommand() ([]MemCapListResponse, error)
-	RemoveHostBitCommand(string, string) (string, error)
+	MemCapShowCommand(MemCapShowRequest) (*MemCapShowResponse, error)
+	MemCapListCommand() (*[]MemCapListResponse, error)
+	RemoveHostBitCommand(RemoveHostBitRequest) (string, error)
 	ReopenLogFilesCommand() (string, error)
 	RulesetReloadRulesCommand() (string, error)
 	RulesetReloadNonBlockingCommand() (string, error)
-	RulesetReloadTimeCommand() ([]RulesetReloadTimeResponse, error)
-	RulesetStatsCommand() ([]RulesetStatsResponse, error)
-	RulesetFailedRulesCommand() ([]RulesetFailedRulesResponse, error)
+	RulesetReloadTimeCommand() (*[]RulesetReloadTimeResponse, error)
+	RulesetStatsCommand() (*[]RulesetStatsResponse, error)
+	RulesetFailedRulesCommand() (*[]RulesetFailedRulesResponse, error)
 }
+
+// Iface check
+var _ SocketIFace = (*Socket)(nil)

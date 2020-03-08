@@ -1,23 +1,21 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	shutdown string = "shutdown"
 )
 
-// ShutdownCommand performs a shutdown of suricata and close the net conn
-func (s *socket) ShutdownCommand() (string, error) {
-	// create and marshal the "shutdown" socket message with no args
-	response, err := s.DoCommand(shutdownCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the shutdown response string
-	var shutdown ShutdownResponse
-	if err := json.Unmarshal(response.Message, &shutdown); err != nil {
-		return "", err
-	}
-	// close the socket connection
-	defer s.Close()
+// ShutdownResponse is response from "shutdown"
+type ShutdownResponse StringResponse
 
-	return shutdown.String(), nil
+// String is a helper method to convert a go type into string
+func (s ShutdownResponse) String() string {
+	return string(s)
+}
+
+// ShutdownCommand performs a shutdown of suricata and close the net conn
+func (s *Socket) ShutdownCommand() (string, error) {
+	shutdownResp := new(ShutdownResponse)
+	err := s.DoCommand(shutdown, nil, shutdownResp)
+	defer s.Close()
+	return shutdownResp.String(), err
 }

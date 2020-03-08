@@ -40,7 +40,9 @@ func TestIFaceStatCommand(t *testing.T) {
 		Pkts:             -1,
 	}
 
-	ifaceStat, err := s.IFaceStatCommand("wlan0")
+	ifaceStat, err := s.IFaceStatCommand(IFaceStatRequest{
+		"wlan0",
+	})
 	if err != nil {
 		t.Fatalf("error doing iface-stat command %v", err)
 	}

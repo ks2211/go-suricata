@@ -1,85 +1,78 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	rulesetReoladRules       string = "ruleset-reload-rules"
+	rulesetReloadNonBlocking string = "ruleset-reload-nonblocking"
+	rulesetReloadTime        string = "ruleset-reload-time"
+	rulesetStats             string = "ruleset-stats"
+	rulesetFailedRules       string = "ruleset-failed-rules"
 )
+
+// RulesetReloadRulesResponse is message from ruleset-reload-rules command
+type RulesetReloadRulesResponse StringResponse
+
+// String is a helper method to turn go type into struct
+func (r RulesetReloadRulesResponse) String() string {
+	return string(r)
+}
+
+// RulesetReloadTimeResponse is message from ruleset-reload-time (this is usually in a slice in the response)
+type RulesetReloadTimeResponse struct {
+	ID         int    `json:"id"`
+	LastReload string `json:"last_reload"`
+}
+
+// RulesetStatsResponse is message from ruleset-stats (this is usually in a slice in the response)
+type RulesetStatsResponse struct {
+	ID          int `json:"id"`
+	RulesFailed int `json:"rules_failed"`
+	RulesLoaded int `json:"rules_loaded"`
+}
+
+// RulesetFailedRulesResponse is message from ruleset-failed-rules (this is usually in a slice in the response)
+type RulesetFailedRulesResponse struct {
+	Filename string `json:"filename"`
+	Line     int    `json:"line"`
+	Rule     string `json:"rule"`
+	TenantID int    `json:"tenant_id"`
+}
 
 // RulesetReloadRulesCommand does ruleset reload
 // Not implemented in v3
-func (s *socket) RulesetReloadRulesCommand() (string, error) {
-	// create and marshal the "ruleset-reload-rules" socket message with
-	response, err := s.DoCommand(rulesetReoladRulesCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the iface stat struct
-	var rulesetReloadRules RulesetReloadRulesResponse
-	if err := json.Unmarshal(response.Message, &rulesetReloadRules); err != nil {
-		return "", err
-	}
-	return rulesetReloadRules.String(), nil
+func (s *Socket) RulesetReloadRulesCommand() (string, error) {
+	rulesetReloadRulesResp := new(RulesetReloadRulesResponse)
+	err := s.DoCommand(rulesetReoladRules, nil, rulesetReloadRulesResp)
+	return rulesetReloadRulesResp.String(), err
 }
 
 // RulesetReloadNonBlockingCommand does ruleset reload without blocking
 // Not implemented in v3
-func (s *socket) RulesetReloadNonBlockingCommand() (string, error) {
-	// create and marshal the "ruleset-reload-nonblocking" socket message with
-	response, err := s.DoCommand(rulesetReloadNonBlockingCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the iface stat struct
-	var rulesetReloadRules RulesetReloadRulesResponse
-	if err := json.Unmarshal(response.Message, &rulesetReloadRules); err != nil {
-		return "", err
-	}
-	return rulesetReloadRules.String(), nil
+func (s *Socket) RulesetReloadNonBlockingCommand() (string, error) {
+	rulesetReloadRulesResp := new(RulesetReloadRulesResponse)
+	err := s.DoCommand(rulesetReloadNonBlocking, nil, rulesetReloadRulesResp)
+	return rulesetReloadRulesResp.String(), err
 }
 
 // RulesetReloadTimeCommand gets reload time of ruleset reload
 // Not implemented in v3
-func (s *socket) RulesetReloadTimeCommand() ([]RulesetReloadTimeResponse, error) {
-	// create and marshal the "ruleset-reload-time" socket message with
-	response, err := s.DoCommand(rulesetReloadTimeCommand, nil)
-	if err != nil {
-		return nil, err
-	}
-	// unmarshal into the iface stat struct
-	var rulesetReloadTime []RulesetReloadTimeResponse
-	if err := json.Unmarshal(response.Message, &rulesetReloadTime); err != nil {
-		return nil, err
-	}
-	return rulesetReloadTime, nil
+func (s *Socket) RulesetReloadTimeCommand() (*[]RulesetReloadTimeResponse, error) {
+	rulesetReloadTimeResp := &[]RulesetReloadTimeResponse{}
+	err := s.DoCommand(rulesetReloadTime, nil, rulesetReloadTimeResp)
+	return rulesetReloadTimeResp, err
 }
 
 // RulesetStatsCommand gets ruleset stats
 // Not implemented in v3
-func (s *socket) RulesetStatsCommand() ([]RulesetStatsResponse, error) {
-	// create and marshal the "ruleset-stats" socket message with
-	response, err := s.DoCommand(rulesetStatsCommand, nil)
-	if err != nil {
-		return nil, err
-	}
-	// unmarshal into the iface stat struct
-	var rulesetStats []RulesetStatsResponse
-	if err := json.Unmarshal(response.Message, &rulesetStats); err != nil {
-		return nil, err
-	}
-	return rulesetStats, nil
+func (s *Socket) RulesetStatsCommand() (*[]RulesetStatsResponse, error) {
+	rulesetStatsResp := &[]RulesetStatsResponse{}
+	err := s.DoCommand(rulesetStats, nil, rulesetStatsResp)
+	return rulesetStatsResp, err
 }
 
 // RulesetFailedRulesCommand does ruleset failed rules
 // Not implemented in v3
-func (s *socket) RulesetFailedRulesCommand() ([]RulesetFailedRulesResponse, error) {
-	// create and marshal the "ruleset-failed-rules" socket message with
-	response, err := s.DoCommand(rulesetFailedRulesCommand, nil)
-	if err != nil {
-		return nil, err
-	}
-	// unmarshal into the slice of ruleset failed rules struct
-	var rulesetFailed []RulesetFailedRulesResponse
-	if err := json.Unmarshal(response.Message, &rulesetFailed); err != nil {
-		return nil, err
-	}
-	return rulesetFailed, nil
+func (s *Socket) RulesetFailedRulesCommand() (*[]RulesetFailedRulesResponse, error) {
+	rulesetFailedResp := &[]RulesetFailedRulesResponse{}
+	err := s.DoCommand(rulesetFailedRules, nil, rulesetFailedResp)
+	return rulesetFailedResp, err
 }

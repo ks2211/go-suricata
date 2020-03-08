@@ -1,9 +1,14 @@
 package client
 
 import (
-	"encoding/json"
 	"errors"
 	"strings"
+)
+
+const (
+	memcapSet  string = "memcap-set"
+	memcapShow string = "memcap-show"
+	memcapList string = "memcap-list"
 )
 
 // MemCapSetRequest is the json object needed for memcap-set
@@ -22,9 +27,28 @@ type MemCapShowRequest struct {
 	Name string `json:"config"`
 }
 
+// MemCapListResponse is message from memcap-list
+type MemCapListResponse struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+// MemCapShowResponse is message from memcap-show of a specific memcap
+type MemCapShowResponse struct {
+	Value string `json:"value"`
+}
+
+// MemCapSetResponse is message from memcap-set for a specific memcat
+type MemCapSetResponse StringResponse
+
+// String is a helper method to turn go type into struct
+func (m MemCapSetResponse) String() string {
+	return string(m)
+}
+
 // MemCapSetCommand sets memcap
 // Not implemented in v3
-func (s *socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, error) {
+func (s *Socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, error) {
 	if unlimited, ok := memcapValue.(string); ok {
 		if strings.ToLower(unlimited) != "unlimited" {
 			return "", errors.New("only unlimited can be passed in if passing string memcap value")
@@ -37,48 +61,25 @@ func (s *socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, 
 		}
 	}
 	// create and marshal the "memcap-set" socket message with
-	response, err := s.DoCommand(memcapSetCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the iface stat struct
-	var memcapSet MemCapSetResponse
-	if err := json.Unmarshal(response.Message, &memcapSet); err != nil {
-		return "", err
-	}
-	return memcapSet.String(), nil
+	memcapSetResp := new(MemCapSetResponse)
+	err := s.DoCommand(memcapSet, nil, memcapSetResp)
+	return memcapSetResp.String(), err
 }
 
 // MemCapShowCommand does "memcap-show"
 // Not implemented in v3
-func (s *socket) MemCapShowCommand(memcapName string) (*MemCapShowResponse, error) {
+func (s *Socket) MemCapShowCommand(memCapShowRequest MemCapShowRequest) (*MemCapShowResponse, error) {
 	// create and marshal the "memcap-show" socket message with
-	response, err := s.DoCommand(memcapShowCommand, MemCapShowRequest{
-		Name: memcapName,
-	})
-	if err != nil {
-		return nil, err
-	}
-	// unmarshal into the iface stat struct
-	var memcapShow *MemCapShowResponse
-	if err := json.Unmarshal(response.Message, &memcapShow); err != nil {
-		return nil, err
-	}
-	return memcapShow, nil
+	memCapShowResp := &MemCapShowResponse{}
+	err := s.DoCommand(memcapShow, memCapShowRequest, memCapShowResp)
+	return memCapShowResp, err
 }
 
 // MemCapListCommand does "memcap-list"
 // Not implemented in v3
-func (s *socket) MemCapListCommand() ([]MemCapListResponse, error) {
+func (s *Socket) MemCapListCommand() (*[]MemCapListResponse, error) {
 	// create and marshal the "memcap-show" socket message with the ifaceStatRequest arg
-	response, err := s.DoCommand(memcapListCommand, nil)
-	if err != nil {
-		return nil, err
-	}
-	// unmarshal into the iface stat struct
-	var memcapList []MemCapListResponse
-	if err := json.Unmarshal(response.Message, &memcapList); err != nil {
-		return nil, err
-	}
-	return memcapList, nil
+	memcapListResp := &[]MemCapListResponse{}
+	err := s.DoCommand(memcapList, nil, memcapListResp)
+	return memcapListResp, err
 }

@@ -13,6 +13,8 @@ import (
 // V5: all commands
 // pcap commands
 
+// https://github.com/OISF/suricata/blob/master/python/suricata/sc/specs.py
+
 // Errors
 var (
 	ErrUnimplemented  error = errors.New("error unimplemented in library")
@@ -33,16 +35,34 @@ const (
 	DefaultSocketPathV5 string = "/var/run/suricata/suricata-command.socket"
 )
 
+// Response is the response from connecting.
+// The Message is a json.RawMessage that can be unmarshalled into individual types
+type Response struct {
+	Return  string          `json:"return"`
+	Message json.RawMessage `json:"message"`
+}
+
+// ConnectResponse is the response string from connecting
+type ConnectResponse string
+
+// StringResponse is a string response from an informational string (instead of the json)
+type StringResponse string
+
+// String is a helper method to convert a go type into string
+func (i StringResponse) String() string {
+	return string(i)
+}
+
 // Socket holds the net conn
-type socket struct {
+type Socket struct {
 	path string
 	conn net.Conn
 }
 
 // CreateSocket returns a socket with the path set
-func CreateSocket(path string) (Socket, error) {
+func CreateSocket(path string) (SocketIFace, error) {
 	// create struct
-	sock := socket{
+	sock := Socket{
 		path: path,
 	}
 
@@ -54,7 +74,7 @@ func CreateSocket(path string) (Socket, error) {
 }
 
 // Dial does a net dial to the unix socket and sets the struct conn
-func (s *socket) Dial() error {
+func (s *Socket) Dial() error {
 	// establish conn to socket
 	conn, err := net.DialTimeout("unix", s.path, time.Second*3)
 	if err != nil {
@@ -89,31 +109,35 @@ func (s *socket) Dial() error {
 }
 
 // Path returns socket path
-func (s *socket) Path() string {
+func (s *Socket) Path() string {
 	return s.path
 }
 
 // Close is a helper func to close the net conn (use in a defer)
-func (s *socket) Close() {
+func (s *Socket) Close() {
 	s.conn.Close()
 }
 
-// DoCommand is a helper function to run a command and get the unmarshaled high level response (the message is json.RawMessage)
-func (s *socket) DoCommand(command string, args interface{}) (*Response, error) {
+// DoCommand is a helper function to run a command with optional args and unmarshals into the supplied interface
+func (s *Socket) DoCommand(command string, args, resp interface{}) error {
 	// send the command and marshal the args before sending
 	if err := s.SendMessage(command, args); err != nil {
-		return nil, err
+		return err
 	}
 	// get response
 	response, err := s.ReadResponse(command)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return response, nil
+	err = json.Unmarshal(response.Message, resp)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // ReadResponse gets response from the tcp socket read
-func (s *socket) ReadResponse(commandName string) (*Response, error) {
+func (s *Socket) ReadResponse(commandName string) (*Response, error) {
 	// read from socket
 	response, err := s.receive()
 	if err != nil {
@@ -121,9 +145,12 @@ func (s *socket) ReadResponse(commandName string) (*Response, error) {
 	}
 	// if response not ok, check the message and return error
 	if response.Return != responseOK {
-		var errMessage InformationResponse
+		var errMessage StringResponse
 		if err := json.Unmarshal(response.Message, &errMessage); err != nil {
 			return nil, err
+		}
+		if errMessage.String() == ErrUnknownCommand.Error() {
+			return nil, fmt.Errorf("Error command unsupported in this version %v", errMessage)
 		}
 		return nil, fmt.Errorf("Error doing command %s, %v", commandName, errMessage)
 	}
@@ -131,12 +158,12 @@ func (s *socket) ReadResponse(commandName string) (*Response, error) {
 }
 
 // write is a helper method to write bytes to the socket
-func (s *socket) write(data []byte) (int, error) {
+func (s *Socket) write(data []byte) (int, error) {
 	return s.conn.Write(data)
 }
 
 // receive is a helper method to receive a response from the socket
-func (s *socket) receive() (*Response, error) {
+func (s *Socket) receive() (*Response, error) {
 	response := Response{}
 	decoder := json.NewDecoder(s.conn)
 	if err := decoder.Decode(&response); err != nil {

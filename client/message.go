@@ -26,7 +26,7 @@ func (msg socketMessage) marshalSocketMessage() ([]byte, error) {
 }
 
 // SendMessage sends a message command to the socket
-func (s *socket) SendMessage(command string, args interface{}) error {
+func (s *Socket) SendMessage(command string, args interface{}) error {
 	// create and marshal the "version" socket message with no args
 	msg := createSocketMessage(command, args)
 	socketMsg, err := msg.marshalSocketMessage()

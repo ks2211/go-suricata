@@ -1,37 +1,36 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	captureMode string = "capture-mode"
+	runningMode string = "running-mode"
 )
 
-// RunningModeCommand gets running-mode string
-func (s *socket) RunningModeCommand() (string, error) {
-	// create and marshal the "running-mode" socket message with no args
-	response, err := s.DoCommand(runningModeCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the running mode response string
-	var runningMode RunningModeResponse
-	if err := json.Unmarshal(response.Message, &runningMode); err != nil {
-		return "", err
-	}
+// RunningModeResponse is response from "running-mode"
+type RunningModeResponse StringResponse
 
-	return runningMode.String(), nil
+// String is a helper method to convert a go type into string
+func (r RunningModeResponse) String() string {
+	return string(r)
+}
+
+// CaptureModeResponse is response from "capture-mode"
+type CaptureModeResponse StringResponse
+
+// String is a helper method to convert a go type into string
+func (c CaptureModeResponse) String() string {
+	return string(c)
+}
+
+// RunningModeCommand gets running-mode string
+func (s *Socket) RunningModeCommand() (string, error) {
+	runningModeResp := new(RunningModeResponse)
+	err := s.DoCommand(runningMode, nil, runningModeResp)
+	return runningModeResp.String(), err
 }
 
 // CaptureModeCommand gets capture-mode string
-func (s *socket) CaptureModeCommand() (string, error) {
-	// create and marshal the "capture-mode" socket message with no args
-	response, err := s.DoCommand(captureModeCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the caputre mode response string
-	var captureMode CaptureModeResponse
-	if err := json.Unmarshal(response.Message, &captureMode); err != nil {
-		return "", err
-	}
-
-	return captureMode.String(), nil
+func (s *Socket) CaptureModeCommand() (string, error) {
+	captureModeResp := new(CaptureModeResponse)
+	err := s.DoCommand(captureMode, nil, captureModeResp)
+	return captureModeResp.String(), err
 }

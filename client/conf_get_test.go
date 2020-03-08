@@ -34,7 +34,9 @@ func TestConfGetCommand(t *testing.T) {
 	}
 
 	for _, tt := range cases {
-		confItem, err := s.ConfGetCommand(tt.confItem)
+		confItem, err := s.ConfGetCommand(ConfGetRequest{
+			tt.confItem,
+		})
 		if err != nil {
 			t.Fatalf("error doing conf-get command for %v, error %v", tt.confItem, err)
 		}

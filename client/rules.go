@@ -1,21 +1,20 @@
 package client
 
-import (
-	"encoding/json"
+const (
+	reloadRules string = "reload-rules"
 )
 
-// ReloadRulesCommand performs a reload of rules without restarting suricata
-func (s *socket) ReloadRulesCommand() (string, error) {
-	// create and marshal the "reload-rules" socket message with no args
-	response, err := s.DoCommand(reloadRulesCommand, nil)
-	if err != nil {
-		return "", err
-	}
-	// unmarshal into the reload rules response string
-	var reloadRules ReloadRulesResponse
-	if err := json.Unmarshal(response.Message, &reloadRules); err != nil {
-		return "", err
-	}
+// ReloadRulesResponse is response from "reload-rules"
+type ReloadRulesResponse StringResponse
 
-	return reloadRules.String(), nil
+// String is a helper method to convert a go type into string
+func (r ReloadRulesResponse) String() string {
+	return string(r)
+}
+
+// ReloadRulesCommand performs a reload of rules without restarting suricata
+func (s *Socket) ReloadRulesCommand() (string, error) {
+	reloadRulesResp := new(ReloadRulesResponse)
+	err := s.DoCommand(reloadRules, nil, reloadRulesResp)
+	return reloadRulesResp.String(), err
 }
