@@ -1,7 +1,7 @@
 package client
 
 const (
-	commandList string = "-list"
+	commandList string = "command-list"
 )
 
 // CommandListResponse is the response from "command-list"
