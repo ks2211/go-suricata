@@ -150,7 +150,7 @@ func (s *Socket) ReadResponse(commandName string) (*Response, error) {
 			return nil, err
 		}
 		if errMessage.String() == ErrUnknownCommand.Error() {
-			return nil, fmt.Errorf("Error command unsupported in this version %v", errMessage)
+			return nil, fmt.Errorf("Error command %s unsupported in this version %v", commandName, errMessage)
 		}
 		return nil, fmt.Errorf("Error doing command %s, %v", commandName, errMessage)
 	}
