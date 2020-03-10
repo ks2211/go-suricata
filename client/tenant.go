@@ -64,7 +64,7 @@ func (s *Socket) RegisterTenantHandlerCommand(registerTenantHandlerRequest Regis
 }
 
 // UnRegisterTenantHandlerCommand does unregister-tenant-handler
-func (s *Socket) UnRegisterTenantHandlerCommand(unRegisterTenantHandlerRequest RegisterTenantHandlerRequest) (*UnRegisterTenantHandlerResponse, error) {
+func (s *Socket) UnRegisterTenantHandlerCommand(unRegisterTenantHandlerRequest UnRegisterTenantHandlerRequest) (*UnRegisterTenantHandlerResponse, error) {
 	unRegisterTenantHandlerResp := &UnRegisterTenantHandlerResponse{}
 	err := s.DoCommand(unregisterTenantHandler, unRegisterTenantHandlerRequest, unRegisterTenantHandlerResp)
 	return unRegisterTenantHandlerResp, err

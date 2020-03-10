@@ -21,7 +21,13 @@ type SocketIFace interface {
 	DumpCountersCommand() (*DumpCountersResponse, error)
 	IFaceListCommand() (*IFaceListResponse, error)
 	IFaceStatCommand(IFaceStatRequest) (*IFaceStatResponse, error)
+
+	ReloadTenantCommand(ReloadTenantRequest) (*ReloadTenantResponse, error)
 	RegisterTenantCommand(RegisterTenantRequest) (*RegisterTenantResposne, error)
+	RegisterTenantHandlerCommand(RegisterTenantHandlerRequest) (*RegisterTenantHandlerResponse, error)
+	UnRegisterTenantCommand(UnRegisterTenantRequest) (*UnRegisterTenantResponse, error)
+	UnRegisterTenantHandlerCommand(UnRegisterTenantHandlerRequest) (*UnRegisterTenantHandlerResponse, error)
+
 	ReloadRulesCommand() (string, error)
 	RunningModeCommand() (string, error)
 	ShutdownCommand() (string, error)
