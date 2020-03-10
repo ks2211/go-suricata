@@ -30,6 +30,11 @@ var commandArgsMap = map[string]interface{}{
 // BuildCommandArgs checks the command name and builds the appropriate input struct and returns as interface
 func BuildCommandArgs(commandName string, args []string) (interface{}, error) {
 	switch commandName {
+	// no body needed return nil
+	case captureMode, commandList, dumpCounters, ifaceList, reloadRules,
+		runningMode, shutdown, uptime, version, memcapList, reopenLogFiles,
+		rulesetReoladRules, rulesetReloadNonBlocking, rulesetReloadTime, rulesetStats, rulesetFailedRules:
+		return nil, nil
 	// conf-get
 	case confGet:
 		if len(args) != 1 || args[0] == "" {
@@ -92,6 +97,8 @@ func BuildCommandArgs(commandName string, args []string) (interface{}, error) {
 		v.IPAddr = args[0]
 		v.BitName = args[1]
 		return v, nil
+	case "":
+		return nil, errors.New("error unknown command or currently unimplemented")
 	default:
 		return nil, errors.New("error unknown command or currently unimplemented")
 	}
