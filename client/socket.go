@@ -120,12 +120,8 @@ func (s *Socket) Close() {
 
 // DoCommand is a helper function to run a command with optional args and unmarshals into the supplied interface
 func (s *Socket) DoCommand(command string, args, resp interface{}) error {
-	// send the command and marshal the args before sending
-	if err := s.SendMessage(command, args); err != nil {
-		return err
-	}
-	// get response
-	response, err := s.ReadResponse(command)
+	// send message and get response
+	response, err := s.DoCommandWithResponse(command, args)
 	if err != nil {
 		return err
 	}
@@ -134,6 +130,16 @@ func (s *Socket) DoCommand(command string, args, resp interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// DoCommandWithResponse is a helper function to run a command with optional args and returns the raw json.RawMessage response
+func (s *Socket) DoCommandWithResponse(command string, args interface{}) (*Response, error) {
+	// send the command and marshal the args before sending
+	if err := s.SendMessage(command, args); err != nil {
+		return nil, err
+	}
+	// get response
+	return s.ReadResponse(command)
 }
 
 // ReadResponse gets response from the tcp socket read

@@ -9,6 +9,7 @@ type SocketIFace interface {
 	// Helper methods
 	Path() string
 	DoCommand(string, interface{}, interface{}) error
+	DoCommandWithResponse(string, interface{}) (*Response, error)
 	ReadResponse(string) (*Response, error)
 	SendMessage(string, interface{}) error
 	write([]byte) (int, error)
