@@ -20,6 +20,7 @@ type SocketIFace interface {
 	CommandListCommand() (*CommandListResponse, error)
 	ConfGetCommand(ConfGetRequest) (string, error)
 	DumpCountersCommand() (*DumpCountersResponse, error)
+	HelpCommand() (*CommandListResponse, error)
 	IFaceListCommand() (*IFaceListResponse, error)
 	IFaceStatCommand(IFaceStatRequest) (*IFaceStatResponse, error)
 
