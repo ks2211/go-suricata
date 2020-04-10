@@ -8,10 +8,8 @@ import (
 	"time"
 )
 
-// TODO V3
-// V3: register-tenant-handler, unregister-tenant-handler, register-tenant, reload-tenant, unregister-tenant
-// V5: all commands
-// pcap commands
+// TODO V3: register-tenant-handler, unregister-tenant-handler, register-tenant, reload-tenant, unregister-tenant
+// TODO V5: "iface-bypassed-stat,"ebpf-bypassed-stat, dataset-add
 
 // https://github.com/OISF/suricata/blob/master/python/suricata/sc/specs.py
 

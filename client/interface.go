@@ -49,6 +49,20 @@ type SocketIFace interface {
 	RulesetReloadTimeCommand() (*[]RulesetReloadTimeResponse, error)
 	RulesetStatsCommand() (*[]RulesetStatsResponse, error)
 	RulesetFailedRulesCommand() (*[]RulesetFailedRulesResponse, error)
+
+	// PCAP
+	PcapFileCommand(PcapFileRequest) (string, error)
+	PcapFileContinuousCommand(PcapFileRequest) (string, error)
+	PcapFileNumberCommand() (int, error)
+	PcapFileListCommand() (*PcapFileListResponse, error)
+	PcapLastProcessedCommand() (int, error)
+	PcapInterruptCommand() (string, error)
+	PcapCurrentCommand() (string, error)
+
+	// V5
+	// IFaceByPassStatCommand() error
+	// EbpfByPassStatCommand() error
+	// DataSetAddCommand() error // 3 args
 }
 
 // Iface check

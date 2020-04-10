@@ -25,14 +25,17 @@ var commandArgsMap = map[string]interface{}{
 	listHostBit:             ListHostBitRequest{},
 	removeHostBit:           RemoveHostBitRequest{},
 	memcapShow:              MemCapShowRequest{},
+	pcapFile:                PcapFileRequest{},
+	pcapFileContinuous:      PcapFileRequest{},
 }
 
 // BuildCommandArgs checks the command name and builds the appropriate input struct and returns as interface
 func BuildCommandArgs(commandName string, args []string) (interface{}, error) {
 	switch commandName {
 	// no body needed return nil
-	case captureMode, commandList, dumpCounters, ifaceList, reloadRules,
+	case help, captureMode, commandList, dumpCounters, ifaceList, reloadRules,
 		runningMode, shutdown, uptime, version, memcapList, reopenLogFiles,
+		pcapCurrent, pcapInterrupt, pcapFileList, pcapFileNumber, pcapLastProcessed,
 		rulesetReoladRules, rulesetReloadNonBlocking, rulesetReloadTime, rulesetStats, rulesetFailedRules:
 		return nil, nil
 	// conf-get
@@ -96,6 +99,27 @@ func BuildCommandArgs(commandName string, args []string) (interface{}, error) {
 		}
 		v.IPAddr = args[0]
 		v.BitName = args[1]
+		return v, nil
+	case memcapShow:
+		if len(args) != 1 {
+			return nil, fmt.Errorf(errCommandArgMissing, "name")
+		}
+		v, ok := commandArgsMap[memcapShow].(MemCapShowRequest)
+		if !ok {
+			return nil, errGetArgType
+		}
+		v.Name = args[0]
+		return v, nil
+	case pcapFile, pcapFileContinuous:
+		if len(args) != 2 {
+			return nil, fmt.Errorf(errCommandArgMissing, "filename, output-dir")
+		}
+		v, ok := commandArgsMap[pcapFile].(PcapFileRequest)
+		if !ok {
+			return nil, errGetArgType
+		}
+		v.PcapFile = args[0]
+		v.OutputDirectory = args[1]
 		return v, nil
 	case "":
 		return nil, errors.New("error unknown command or currently unimplemented")
