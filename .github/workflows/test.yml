@@ -1,5 +1,7 @@
 name: Test Across Matrix
 
+on: [push, pull_request]
+
 jobs:
   test:
     # We want to define a strategy for our job
