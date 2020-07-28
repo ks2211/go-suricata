@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"reflect"
 	"testing"
 )
@@ -14,7 +15,7 @@ func TestRunningModeCommand(t *testing.T) {
 
 	expectedOutput := "workers"
 
-	runningMode, err := s.RunningModeCommand()
+	runningMode, err := s.RunningModeCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing running-mode command %v", err)
 	}
@@ -36,7 +37,7 @@ func TestCaptureModeCommand(t *testing.T) {
 
 	expectedOutput := "AF_PACKET_DEV"
 
-	captureMode, err := s.CaptureModeCommand()
+	captureMode, err := s.CaptureModeCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing capture-mode command %v", err)
 	}

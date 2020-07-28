@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"reflect"
 	"testing"
 )
@@ -12,7 +13,7 @@ func TestUptimeCommand(t *testing.T) {
 	}
 	defer s.Close()
 
-	uptime, err := s.UptimeCommand()
+	uptime, err := s.UptimeCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing uptime command %v", err)
 	}

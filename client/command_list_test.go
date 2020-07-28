@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"testing"
 )
 
@@ -22,16 +23,31 @@ func TestCommandListCommand(t *testing.T) {
 		"conf-get",
 		"dump-counters",
 		"reload-rules",
+		"ruleset-reload-rules",
+		"ruleset-reload-nonblocking",
+		"ruleset-reload-time",
+		"ruleset-stats",
+		"ruleset-failed-rules",
 		"register-tenant-handler",
 		"unregister-tenant-handler",
 		"register-tenant",
 		"reload-tenant",
 		"unregister-tenant",
+		"add-hostbit",
+		"remove-hostbit",
+		"list-hostbit",
+		"reopen-log-files",
+		"memcap-set",
+		"memcap-show",
+		"memcap-list",
+		"dataset-add",
 		"iface-stat",
 		"iface-list",
+		"iface-bypassed-stat",
+		"ebpf-bypassed-stat",
 	}
 
-	commands, err := s.CommandListCommand()
+	commands, err := s.CommandListCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing command-list command %v", err)
 	}

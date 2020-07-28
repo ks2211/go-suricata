@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	ifaceList string = "iface-list"
 	ifaceStat string = "iface-stat"
@@ -24,15 +26,15 @@ type IFaceStatResponse struct {
 }
 
 // IFaceListCommand gets the list of interfaces available
-func (s *Socket) IFaceListCommand() (*IFaceListResponse, error) {
+func (s *Socket) IFaceListCommand(ctx context.Context) (*IFaceListResponse, error) {
 	ifaceListResp := &IFaceListResponse{}
-	err := s.DoCommand(ifaceList, nil, ifaceListResp)
+	err := s.DoCommand(ctx, ifaceList, nil, ifaceListResp)
 	return ifaceListResp, err
 }
 
 // IFaceStatCommand gets information about a specific interface
-func (s *Socket) IFaceStatCommand(ifaceStatRequest IFaceStatRequest) (*IFaceStatResponse, error) {
+func (s *Socket) IFaceStatCommand(ctx context.Context, req IFaceStatRequest) (*IFaceStatResponse, error) {
 	ifaceInfo := &IFaceStatResponse{}
-	err := s.DoCommand(ifaceStat, ifaceStatRequest, ifaceInfo)
+	err := s.DoCommand(ctx, ifaceStat, req, ifaceInfo)
 	return ifaceInfo, err
 }

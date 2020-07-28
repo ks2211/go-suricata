@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	confGet string = "conf-get"
 )
@@ -19,8 +21,8 @@ func (c ConfGetResponse) String() string {
 }
 
 // ConfGetCommand performs a fetch on a config item using a key string, only returns string/int/bool values
-func (s *Socket) ConfGetCommand(confGetRequest ConfGetRequest) (string, error) {
+func (s *Socket) ConfGetCommand(ctx context.Context, req ConfGetRequest) (string, error) {
 	configResp := new(ConfGetResponse)
-	err := s.DoCommand(confGet, confGetRequest, configResp)
+	err := s.DoCommand(ctx, confGet, req, configResp)
 	return configResp.String(), err
 }

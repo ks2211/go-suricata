@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	version string = "version"
 )
@@ -13,8 +15,8 @@ func (v VersionResponse) String() string {
 }
 
 // VersionCommand gets version of suricata and sets the version in the pointer
-func (s *Socket) VersionCommand() (string, error) {
+func (s *Socket) VersionCommand(ctx context.Context) (string, error) {
 	versionResp := new(VersionResponse)
-	err := s.DoCommand(version, nil, versionResp)
+	err := s.DoCommand(ctx, version, nil, versionResp)
 	return versionResp.String(), err
 }

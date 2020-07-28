@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	registerTenant          string = "register-tenant"
 	registerTenantHandler   string = "register-tenant-handler"
@@ -57,36 +59,36 @@ type UnRegisterTenantResponse struct{}
 type ReloadTenantResponse struct{}
 
 // RegisterTenantHandlerCommand does register-tenant-handler
-func (s *Socket) RegisterTenantHandlerCommand(registerTenantHandlerRequest RegisterTenantHandlerRequest) (*RegisterTenantHandlerResponse, error) {
+func (s *Socket) RegisterTenantHandlerCommand(ctx context.Context, req RegisterTenantHandlerRequest) (*RegisterTenantHandlerResponse, error) {
 	registerTenantHandlerResp := &RegisterTenantHandlerResponse{}
-	err := s.DoCommand(registerTenantHandler, registerTenantHandlerRequest, registerTenantHandlerResp)
+	err := s.DoCommand(ctx, registerTenantHandler, req, registerTenantHandlerResp)
 	return registerTenantHandlerResp, err
 }
 
 // UnRegisterTenantHandlerCommand does unregister-tenant-handler
-func (s *Socket) UnRegisterTenantHandlerCommand(unRegisterTenantHandlerRequest UnRegisterTenantHandlerRequest) (*UnRegisterTenantHandlerResponse, error) {
+func (s *Socket) UnRegisterTenantHandlerCommand(ctx context.Context, req UnRegisterTenantHandlerRequest) (*UnRegisterTenantHandlerResponse, error) {
 	unRegisterTenantHandlerResp := &UnRegisterTenantHandlerResponse{}
-	err := s.DoCommand(unregisterTenantHandler, unRegisterTenantHandlerRequest, unRegisterTenantHandlerResp)
+	err := s.DoCommand(ctx, unregisterTenantHandler, req, unRegisterTenantHandlerResp)
 	return unRegisterTenantHandlerResp, err
 }
 
 // RegisterTenantCommand does register-tenant
-func (s *Socket) RegisterTenantCommand(registerTenantRequest RegisterTenantRequest) (*RegisterTenantResposne, error) {
+func (s *Socket) RegisterTenantCommand(ctx context.Context, req RegisterTenantRequest) (*RegisterTenantResposne, error) {
 	registerTenantResp := &RegisterTenantResposne{}
-	err := s.DoCommand(registerTenant, registerTenantRequest, registerTenantResp)
+	err := s.DoCommand(ctx, registerTenant, req, registerTenantResp)
 	return registerTenantResp, err
 }
 
 // ReloadTenantCommand does reload-tenant
-func (s *Socket) ReloadTenantCommand(reloadTenantRequest ReloadTenantRequest) (*ReloadTenantResponse, error) {
+func (s *Socket) ReloadTenantCommand(ctx context.Context, req ReloadTenantRequest) (*ReloadTenantResponse, error) {
 	reloadTenantResp := &ReloadTenantResponse{}
-	err := s.DoCommand(reloadTenant, reloadTenantRequest, reloadTenantResp)
+	err := s.DoCommand(ctx, reloadTenant, req, reloadTenantResp)
 	return reloadTenantResp, err
 }
 
 // UnRegisterTenantCommand does unregister-tenant
-func (s *Socket) UnRegisterTenantCommand(unRegisterTenantRequest UnRegisterTenantRequest) (*UnRegisterTenantResponse, error) {
+func (s *Socket) UnRegisterTenantCommand(ctx context.Context, req UnRegisterTenantRequest) (*UnRegisterTenantResponse, error) {
 	unRegisterTenantResp := &UnRegisterTenantResponse{}
-	err := s.DoCommand(unregisterTenant, unRegisterTenantRequest, unRegisterTenantResp)
+	err := s.DoCommand(ctx, unregisterTenant, req, unRegisterTenantResp)
 	return unRegisterTenantResp, err
 }

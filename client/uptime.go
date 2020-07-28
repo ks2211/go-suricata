@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	uptime string = "uptime"
 )
@@ -8,8 +10,8 @@ const (
 type UptimeResponse int
 
 // UptimeCommand gets uptime of suricata
-func (s *Socket) UptimeCommand() (int, error) {
+func (s *Socket) UptimeCommand(ctx context.Context) (int, error) {
 	uptimeResp := new(UptimeResponse)
-	err := s.DoCommand(uptime, nil, uptimeResp)
+	err := s.DoCommand(ctx, uptime, nil, uptimeResp)
 	return int(*uptimeResp), err
 }

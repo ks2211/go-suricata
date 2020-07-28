@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"errors"
 	"strings"
 )
@@ -48,7 +49,7 @@ func (m MemCapSetResponse) String() string {
 
 // MemCapSetCommand sets memcap
 // Not implemented in v3
-func (s *Socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, error) {
+func (s *Socket) MemCapSetCommand(ctx context.Context, memcapName, memcapValue interface{}) (string, error) {
 	if unlimited, ok := memcapValue.(string); ok {
 		if strings.ToLower(unlimited) != "unlimited" {
 			return "", errors.New("only unlimited can be passed in if passing string memcap value")
@@ -62,24 +63,24 @@ func (s *Socket) MemCapSetCommand(memcapName, memcapValue interface{}) (string, 
 	}
 	// create and marshal the "memcap-set" socket message with
 	memcapSetResp := new(MemCapSetResponse)
-	err := s.DoCommand(memcapSet, nil, memcapSetResp)
+	err := s.DoCommand(ctx, memcapSet, nil, memcapSetResp)
 	return memcapSetResp.String(), err
 }
 
 // MemCapShowCommand does "memcap-show"
 // Not implemented in v3
-func (s *Socket) MemCapShowCommand(memCapShowRequest MemCapShowRequest) (*MemCapShowResponse, error) {
+func (s *Socket) MemCapShowCommand(ctx context.Context, req MemCapShowRequest) (*MemCapShowResponse, error) {
 	// create and marshal the "memcap-show" socket message with
 	memCapShowResp := &MemCapShowResponse{}
-	err := s.DoCommand(memcapShow, memCapShowRequest, memCapShowResp)
+	err := s.DoCommand(ctx, memcapShow, req, memCapShowResp)
 	return memCapShowResp, err
 }
 
 // MemCapListCommand does "memcap-list"
 // Not implemented in v3
-func (s *Socket) MemCapListCommand() (*[]MemCapListResponse, error) {
+func (s *Socket) MemCapListCommand(ctx context.Context) (*[]MemCapListResponse, error) {
 	// create and marshal the "memcap-show" socket message with the ifaceStatRequest arg
 	memcapListResp := &[]MemCapListResponse{}
-	err := s.DoCommand(memcapList, nil, memcapListResp)
+	err := s.DoCommand(ctx, memcapList, nil, memcapListResp)
 	return memcapListResp, err
 }

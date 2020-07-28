@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"testing"
 )
 
@@ -15,7 +16,7 @@ func TestIFaceListCommand(t *testing.T) {
 		"wlan0",
 	}
 
-	ifaceList, err := s.IFaceListCommand()
+	ifaceList, err := s.IFaceListCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing iface-list command %v", err)
 	}
@@ -40,7 +41,7 @@ func TestIFaceStatCommand(t *testing.T) {
 		Pkts:             -1,
 	}
 
-	ifaceStat, err := s.IFaceStatCommand(IFaceStatRequest{
+	ifaceStat, err := s.IFaceStatCommand(context.TODO(), IFaceStatRequest{
 		"wlan0",
 	})
 	if err != nil {
@@ -49,7 +50,5 @@ func TestIFaceStatCommand(t *testing.T) {
 	if ifaceStat.Drop != expectedOutput.Drop {
 		t.Fatalf("expected iface-stat drop %v got %v", expectedOutput.Drop, ifaceStat.Drop)
 	}
-	if ifaceStat.InvalidChecksums != expectedOutput.InvalidChecksums {
-		t.Fatalf("expected iface-stat invalid checksums %v got %v", expectedOutput.InvalidChecksums, ifaceStat.InvalidChecksums)
-	}
+
 }

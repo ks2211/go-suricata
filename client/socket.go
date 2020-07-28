@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -58,7 +59,7 @@ type Socket struct {
 }
 
 // CreateSocket returns a socket with the path set
-func CreateSocket(path string) (SocketIFace, error) {
+func CreateSocket(path string) (*Socket, error) {
 	// create struct
 	sock := Socket{
 		path: path,
@@ -117,9 +118,9 @@ func (s *Socket) Close() {
 }
 
 // DoCommand is a helper function to run a command with optional args and unmarshals into the supplied interface
-func (s *Socket) DoCommand(command string, args, resp interface{}) error {
+func (s *Socket) DoCommand(ctx context.Context, command string, args, resp interface{}) error {
 	// send message and get response
-	response, err := s.DoCommandWithResponse(command, args)
+	response, err := s.DoCommandWithResponse(ctx, command, args)
 	if err != nil {
 		return err
 	}
@@ -131,7 +132,7 @@ func (s *Socket) DoCommand(command string, args, resp interface{}) error {
 }
 
 // DoCommandWithResponse is a helper function to run a command with optional args and returns the raw json.RawMessage response
-func (s *Socket) DoCommandWithResponse(command string, args interface{}) (*Response, error) {
+func (s *Socket) DoCommandWithResponse(ctx context.Context, command string, args interface{}) (*Response, error) {
 	// send the command and marshal the args before sending
 	if err := s.SendMessage(command, args); err != nil {
 		return nil, err

@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"reflect"
 	"testing"
 )
@@ -14,7 +15,7 @@ func TestReloadRulesCommand(t *testing.T) {
 
 	expectedOutput := "done"
 
-	reload, err := s.ReloadRulesCommand()
+	reload, err := s.ReloadRulesCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing reload-rules command %v", err)
 	}

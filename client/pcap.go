@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 // TODO
 // 	pcap-file, pcap-file-continuous, pcap-file-number, pcap-file-list, pcap-last-processed, pcap-interrupt, pcap-current
 
@@ -56,50 +58,50 @@ type PcapFileListResponse struct {
 }
 
 // PcapFileCommand sends a pcap file and output directory to be processed
-func (s *Socket) PcapFileCommand(req PcapFileRequest) (string, error) {
+func (s *Socket) PcapFileCommand(ctx context.Context, req PcapFileRequest) (string, error) {
 	pcapFileResp := new(PcapFileResponse)
-	err := s.DoCommand(pcapFile, req, pcapFileResp)
+	err := s.DoCommand(ctx, pcapFile, req, pcapFileResp)
 	return pcapFileResp.String(), err
 }
 
 // PcapFileContinuousCommand sends a pcap file and output directory to be processed
-func (s *Socket) PcapFileContinuousCommand(req PcapFileRequest) (string, error) {
+func (s *Socket) PcapFileContinuousCommand(ctx context.Context, req PcapFileRequest) (string, error) {
 	pcapFileResp := new(PcapFileResponse)
-	err := s.DoCommand(pcapFileContinuous, req, pcapFileResp)
+	err := s.DoCommand(ctx, pcapFileContinuous, req, pcapFileResp)
 	return pcapFileResp.String(), err
 }
 
 // PcapFileNumberCommand gets number of pcap files being processed
-func (s *Socket) PcapFileNumberCommand() (int, error) {
+func (s *Socket) PcapFileNumberCommand(ctx context.Context) (int, error) {
 	pcapFileNumberResp := new(PcapFileNumberResponse)
-	err := s.DoCommand(pcapFileNumber, nil, pcapFileNumberResp)
+	err := s.DoCommand(ctx, pcapFileNumber, nil, pcapFileNumberResp)
 	return int(*pcapFileNumberResp), err
 }
 
 // PcapLastProcessedCommand gets last pcap procssed
-func (s *Socket) PcapLastProcessedCommand() (int, error) {
+func (s *Socket) PcapLastProcessedCommand(ctx context.Context) (int, error) {
 	pcapLastProcessedResp := new(PcapLastProcessed)
-	err := s.DoCommand(pcapLastProcessed, nil, pcapLastProcessedResp)
+	err := s.DoCommand(ctx, pcapLastProcessed, nil, pcapLastProcessedResp)
 	return int(*pcapLastProcessedResp), err
 }
 
 // PcapInterruptCommand does an interrupt on pcap processing
-func (s *Socket) PcapFileListCommand() (*PcapFileListResponse, error) {
+func (s *Socket) PcapFileListCommand(ctx context.Context) (*PcapFileListResponse, error) {
 	pcapFileListResp := &PcapFileListResponse{}
-	err := s.DoCommand(pcapFileList, nil, pcapFileListResp)
+	err := s.DoCommand(ctx, pcapFileList, nil, pcapFileListResp)
 	return pcapFileListResp, err
 }
 
 // PcapInterruptCommand does an interrupt on pcap processing
-func (s *Socket) PcapInterruptCommand() (string, error) {
+func (s *Socket) PcapInterruptCommand(ctx context.Context) (string, error) {
 	pcapInterruptResp := new(PcapInterruptResponse)
-	err := s.DoCommand(pcapInterrupt, nil, pcapInterruptResp)
+	err := s.DoCommand(ctx, pcapInterrupt, nil, pcapInterruptResp)
 	return pcapInterruptResp.String(), err
 }
 
 // PcapCurrentCommand gets current pcap being processed
-func (s *Socket) PcapCurrentCommand() (string, error) {
+func (s *Socket) PcapCurrentCommand(ctx context.Context) (string, error) {
 	pcapCurrentResp := new(PcapCurrentResponse)
-	err := s.DoCommand(pcapCurrent, nil, pcapCurrentResp)
+	err := s.DoCommand(ctx, pcapCurrent, nil, pcapCurrentResp)
 	return pcapCurrentResp.String(), err
 }

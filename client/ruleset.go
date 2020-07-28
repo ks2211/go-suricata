@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	rulesetReoladRules       string = "ruleset-reload-rules"
 	rulesetReloadNonBlocking string = "ruleset-reload-nonblocking"
@@ -39,40 +41,40 @@ type RulesetFailedRulesResponse struct {
 
 // RulesetReloadRulesCommand does ruleset reload
 // Not implemented in v3
-func (s *Socket) RulesetReloadRulesCommand() (string, error) {
+func (s *Socket) RulesetReloadRulesCommand(ctx context.Context) (string, error) {
 	rulesetReloadRulesResp := new(RulesetReloadRulesResponse)
-	err := s.DoCommand(rulesetReoladRules, nil, rulesetReloadRulesResp)
+	err := s.DoCommand(ctx, rulesetReoladRules, nil, rulesetReloadRulesResp)
 	return rulesetReloadRulesResp.String(), err
 }
 
 // RulesetReloadNonBlockingCommand does ruleset reload without blocking
 // Not implemented in v3
-func (s *Socket) RulesetReloadNonBlockingCommand() (string, error) {
+func (s *Socket) RulesetReloadNonBlockingCommand(ctx context.Context) (string, error) {
 	rulesetReloadRulesResp := new(RulesetReloadRulesResponse)
-	err := s.DoCommand(rulesetReloadNonBlocking, nil, rulesetReloadRulesResp)
+	err := s.DoCommand(ctx, rulesetReloadNonBlocking, nil, rulesetReloadRulesResp)
 	return rulesetReloadRulesResp.String(), err
 }
 
 // RulesetReloadTimeCommand gets reload time of ruleset reload
 // Not implemented in v3
-func (s *Socket) RulesetReloadTimeCommand() (*[]RulesetReloadTimeResponse, error) {
+func (s *Socket) RulesetReloadTimeCommand(ctx context.Context) (*[]RulesetReloadTimeResponse, error) {
 	rulesetReloadTimeResp := &[]RulesetReloadTimeResponse{}
-	err := s.DoCommand(rulesetReloadTime, nil, rulesetReloadTimeResp)
+	err := s.DoCommand(ctx, rulesetReloadTime, nil, rulesetReloadTimeResp)
 	return rulesetReloadTimeResp, err
 }
 
 // RulesetStatsCommand gets ruleset stats
 // Not implemented in v3
-func (s *Socket) RulesetStatsCommand() (*[]RulesetStatsResponse, error) {
+func (s *Socket) RulesetStatsCommand(ctx context.Context) (*[]RulesetStatsResponse, error) {
 	rulesetStatsResp := &[]RulesetStatsResponse{}
-	err := s.DoCommand(rulesetStats, nil, rulesetStatsResp)
+	err := s.DoCommand(ctx, rulesetStats, nil, rulesetStatsResp)
 	return rulesetStatsResp, err
 }
 
 // RulesetFailedRulesCommand does ruleset failed rules
 // Not implemented in v3
-func (s *Socket) RulesetFailedRulesCommand() (*[]RulesetFailedRulesResponse, error) {
+func (s *Socket) RulesetFailedRulesCommand(ctx context.Context) (*[]RulesetFailedRulesResponse, error) {
 	rulesetFailedResp := &[]RulesetFailedRulesResponse{}
-	err := s.DoCommand(rulesetFailedRules, nil, rulesetFailedResp)
+	err := s.DoCommand(ctx, rulesetFailedRules, nil, rulesetFailedResp)
 	return rulesetFailedResp, err
 }

@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	addHostBit    string = "add-hostbit"
 	removeHostBit string = "remove-hostbit"
@@ -46,24 +48,24 @@ func (a AddOrRemoveHostBitResponse) String() string {
 
 // AddHostBitCommand adds host bit
 // Not implemented in v3
-func (s *Socket) AddHostBitCommand(addHostBitRequest AddHostBitRequest) (string, error) {
+func (s *Socket) AddHostBitCommand(ctx context.Context, req AddHostBitRequest) (string, error) {
 	addHostbitResp := new(AddOrRemoveHostBitResponse)
-	err := s.DoCommand(addHostBit, addHostBitRequest, addHostbitResp)
+	err := s.DoCommand(ctx, addHostBit, req, addHostbitResp)
 	return addHostbitResp.String(), err
 }
 
 // RemoveHostBitCommand does "remove-hostbit"
 // Not implemented in v3
-func (s *Socket) RemoveHostBitCommand(removeHostBitRequest RemoveHostBitRequest) (string, error) {
+func (s *Socket) RemoveHostBitCommand(ctx context.Context, req RemoveHostBitRequest) (string, error) {
 	removeHostBitResp := new(AddOrRemoveHostBitResponse)
-	err := s.DoCommand(removeHostBit, removeHostBitRequest, removeHostBitResp)
+	err := s.DoCommand(ctx, removeHostBit, req, removeHostBitResp)
 	return removeHostBitResp.String(), err
 }
 
 // ListHostBitCommand does "list-hostbit"
 // Not implemented in v3
-func (s *Socket) ListHostBitCommand(listHostBitRequest ListHostBitRequest) (*ListHostBitsResponse, error) {
+func (s *Socket) ListHostBitCommand(ctx context.Context, req ListHostBitRequest) (*ListHostBitsResponse, error) {
 	hostbitsResp := &ListHostBitsResponse{}
-	err := s.DoCommand(listHostBit, listHostBitRequest, hostbitsResp)
+	err := s.DoCommand(ctx, listHostBit, req, hostbitsResp)
 	return hostbitsResp, err
 }

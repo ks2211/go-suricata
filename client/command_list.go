@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	commandList string = "command-list"
 )
@@ -11,8 +13,8 @@ type CommandListResponse struct {
 }
 
 // CommandListCommand gets the list of commands available for this version of suricata and adds it to list of commands
-func (s *Socket) CommandListCommand() (*CommandListResponse, error) {
+func (s *Socket) CommandListCommand(ctx context.Context) (*CommandListResponse, error) {
 	commandListResp := &CommandListResponse{}
-	err := s.DoCommand(commandList, nil, commandListResp)
+	err := s.DoCommand(ctx, commandList, nil, commandListResp)
 	return commandListResp, err
 }

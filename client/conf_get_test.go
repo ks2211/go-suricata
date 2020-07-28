@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"testing"
 )
 
@@ -34,7 +35,7 @@ func TestConfGetCommand(t *testing.T) {
 	}
 
 	for _, tt := range cases {
-		confItem, err := s.ConfGetCommand(ConfGetRequest{
+		confItem, err := s.ConfGetCommand(context.TODO(), ConfGetRequest{
 			tt.confItem,
 		})
 		if err != nil {

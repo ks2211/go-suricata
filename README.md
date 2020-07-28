@@ -1,4 +1,4 @@
-[![Documentation](https://godoc.org/github.com/ks2211/go-suricata?status.svg)](http://godoc.org/github.com/ks2211/go-suricata)
+[![Documentation](https://pkg.dev.go/github.com/ks2211/go-suricata?status.svg)](http://pkg.dev.go/github.com/ks2211/go-suricata)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ks2211/go-suricata)](https://goreportcard.com/report/github.com/ks2211/go-suricata)
 
 # Go Suricata Client 
@@ -133,7 +133,7 @@ Please make sure to update tests as appropriate.
 
 * *TODO*: There is a lot of duplicate/repeated code around creating the socket client/closing the connection for each testing method--need test helpers
 
-* *TODO*: Look into using table test cases for more of the command test cases
+* *TODO*: Mock the interface for testing
 
 
 ## TODO

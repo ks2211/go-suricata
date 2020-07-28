@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	reopenLogFiles string = "reopen-log-files"
 )
@@ -14,8 +16,8 @@ func (r ReopenLogFilesResponse) String() string {
 
 // ReopenLogFilesCommand reopens log files via the reopen-logfiles command
 // Not implemented in v3
-func (s *Socket) ReopenLogFilesCommand() (string, error) {
+func (s *Socket) ReopenLogFilesCommand(ctx context.Context) (string, error) {
 	reopenLogFilesResp := new(ReopenLogFilesResponse)
-	err := s.DoCommand(reopenLogFiles, nil, reopenLogFilesResp)
+	err := s.DoCommand(ctx, reopenLogFiles, nil, reopenLogFilesResp)
 	return reopenLogFilesResp.String(), err
 }

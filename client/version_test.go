@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"reflect"
 	"testing"
 )
@@ -12,9 +13,9 @@ func TestVersionCommand(t *testing.T) {
 	}
 	defer s.Close()
 
-	expectedVersion := "3.2 RELEASE"
+	expectedVersion := "5.0.1 RELEASE"
 
-	version, err := s.VersionCommand()
+	version, err := s.VersionCommand(context.TODO())
 	if err != nil {
 		t.Fatalf("error doing version command %v", err)
 	}

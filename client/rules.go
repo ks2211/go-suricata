@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	reloadRules string = "reload-rules"
 )
@@ -13,8 +15,8 @@ func (r ReloadRulesResponse) String() string {
 }
 
 // ReloadRulesCommand performs a reload of rules without restarting suricata
-func (s *Socket) ReloadRulesCommand() (string, error) {
+func (s *Socket) ReloadRulesCommand(ctx context.Context) (string, error) {
 	reloadRulesResp := new(ReloadRulesResponse)
-	err := s.DoCommand(reloadRules, nil, reloadRulesResp)
+	err := s.DoCommand(ctx, reloadRules, nil, reloadRulesResp)
 	return reloadRulesResp.String(), err
 }

@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	captureMode string = "capture-mode"
 	runningMode string = "running-mode"
@@ -22,15 +24,15 @@ func (c CaptureModeResponse) String() string {
 }
 
 // RunningModeCommand gets running-mode string
-func (s *Socket) RunningModeCommand() (string, error) {
+func (s *Socket) RunningModeCommand(ctx context.Context) (string, error) {
 	runningModeResp := new(RunningModeResponse)
-	err := s.DoCommand(runningMode, nil, runningModeResp)
+	err := s.DoCommand(ctx, runningMode, nil, runningModeResp)
 	return runningModeResp.String(), err
 }
 
 // CaptureModeCommand gets capture-mode string
-func (s *Socket) CaptureModeCommand() (string, error) {
+func (s *Socket) CaptureModeCommand(ctx context.Context) (string, error) {
 	captureModeResp := new(CaptureModeResponse)
-	err := s.DoCommand(captureMode, nil, captureModeResp)
+	err := s.DoCommand(ctx, captureMode, nil, captureModeResp)
 	return captureModeResp.String(), err
 }

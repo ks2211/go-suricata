@@ -1,14 +1,16 @@
 package client
 
+import "context"
+
 const (
 	dumpCounters string = "dump-counters"
 )
 
 // DumpCountersCommand performs the dump-counters command
-func (s *Socket) DumpCountersCommand() (*DumpCountersResponse, error) {
+func (s *Socket) DumpCountersCommand(ctx context.Context) (*DumpCountersResponse, error) {
 	// create and marshal the "dump-counters" socket message with no args
 	counters := &DumpCountersResponse{}
-	err := s.DoCommand(dumpCounters, nil, counters)
+	err := s.DoCommand(ctx, dumpCounters, nil, counters)
 	return counters, err
 }
 

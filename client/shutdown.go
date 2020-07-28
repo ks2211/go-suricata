@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 const (
 	shutdown string = "shutdown"
 )
@@ -13,9 +15,9 @@ func (s ShutdownResponse) String() string {
 }
 
 // ShutdownCommand performs a shutdown of suricata and close the net conn
-func (s *Socket) ShutdownCommand() (string, error) {
+func (s *Socket) ShutdownCommand(ctx context.Context) (string, error) {
 	shutdownResp := new(ShutdownResponse)
-	err := s.DoCommand(shutdown, nil, shutdownResp)
+	err := s.DoCommand(ctx, shutdown, nil, shutdownResp)
 	defer s.Close()
 	return shutdownResp.String(), err
 }
