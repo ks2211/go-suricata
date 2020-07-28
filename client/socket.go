@@ -22,8 +22,10 @@ var (
 
 // Constants
 const (
-	responseOK    string = "OK"
-	responseNOK   string = "NOK"
+	// ResponseOK holds an ok response
+	ResponseOK string = "OK"
+	// ResponseNOK holds a not ok response
+	ResponseNOK   string = "NOK"
 	clientVersion string = "0.1"
 
 	// DefaultSocketPathV3 is default path of the socket
@@ -97,7 +99,7 @@ func (s *Socket) Dial() error {
 		return err
 	}
 	// if response not ok, check the message and return error
-	if response.Return != responseOK {
+	if response.Return != ResponseOK {
 		var connMessage ConnectResponse
 		if err := json.Unmarshal(response.Message, &connMessage); err != nil {
 			return err
@@ -149,7 +151,7 @@ func (s *Socket) ReadResponse(commandName string) (*Response, error) {
 		return nil, err
 	}
 	// if response not ok, check the message and return error
-	if response.Return != responseOK {
+	if response.Return != ResponseOK {
 		var errMessage StringResponse
 		if err := json.Unmarshal(response.Message, &errMessage); err != nil {
 			return nil, err
