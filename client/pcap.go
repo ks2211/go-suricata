@@ -86,9 +86,9 @@ func (s *Socket) PcapLastProcessedCommand(ctx context.Context) (int, error) {
 }
 
 // PcapInterruptCommand does an interrupt on pcap processing
-func (s *Socket) PcapFileListCommand(ctx context.Context) (*PcapFileListResponse, error) {
-	pcapFileListResp := &PcapFileListResponse{}
-	err := s.DoCommand(ctx, pcapFileList, nil, pcapFileListResp)
+func (s *Socket) PcapFileListCommand(ctx context.Context) (PcapFileListResponse, error) {
+	pcapFileListResp := PcapFileListResponse{}
+	err := s.DoCommand(ctx, pcapFileList, nil, &pcapFileListResp)
 	return pcapFileListResp, err
 }
 

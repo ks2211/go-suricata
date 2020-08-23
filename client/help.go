@@ -7,6 +7,6 @@ const (
 )
 
 // HelpCommand does "help" command which has the same response as "command-list"
-func (s *Socket) HelpCommand(ctx context.Context) (*CommandListResponse, error) {
+func (s *Socket) HelpCommand(ctx context.Context) (CommandListResponse, error) {
 	return s.CommandListCommand(ctx)
 }

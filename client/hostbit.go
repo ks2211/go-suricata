@@ -64,8 +64,8 @@ func (s *Socket) RemoveHostBitCommand(ctx context.Context, req RemoveHostBitRequ
 
 // ListHostBitCommand does "list-hostbit"
 // Not implemented in v3
-func (s *Socket) ListHostBitCommand(ctx context.Context, req ListHostBitRequest) (*ListHostBitsResponse, error) {
-	hostbitsResp := &ListHostBitsResponse{}
-	err := s.DoCommand(ctx, listHostBit, req, hostbitsResp)
+func (s *Socket) ListHostBitCommand(ctx context.Context, req ListHostBitRequest) (ListHostBitsResponse, error) {
+	hostbitsResp := ListHostBitsResponse{}
+	err := s.DoCommand(ctx, listHostBit, req, &hostbitsResp)
 	return hostbitsResp, err
 }

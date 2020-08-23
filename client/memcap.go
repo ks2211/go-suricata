@@ -69,18 +69,18 @@ func (s *Socket) MemCapSetCommand(ctx context.Context, memcapName, memcapValue i
 
 // MemCapShowCommand does "memcap-show"
 // Not implemented in v3
-func (s *Socket) MemCapShowCommand(ctx context.Context, req MemCapShowRequest) (*MemCapShowResponse, error) {
+func (s *Socket) MemCapShowCommand(ctx context.Context, req MemCapShowRequest) (MemCapShowResponse, error) {
 	// create and marshal the "memcap-show" socket message with
-	memCapShowResp := &MemCapShowResponse{}
-	err := s.DoCommand(ctx, memcapShow, req, memCapShowResp)
+	memCapShowResp := MemCapShowResponse{}
+	err := s.DoCommand(ctx, memcapShow, req, &memCapShowResp)
 	return memCapShowResp, err
 }
 
 // MemCapListCommand does "memcap-list"
 // Not implemented in v3
-func (s *Socket) MemCapListCommand(ctx context.Context) (*[]MemCapListResponse, error) {
+func (s *Socket) MemCapListCommand(ctx context.Context) ([]MemCapListResponse, error) {
 	// create and marshal the "memcap-show" socket message with the ifaceStatRequest arg
-	memcapListResp := &[]MemCapListResponse{}
-	err := s.DoCommand(ctx, memcapList, nil, memcapListResp)
+	memcapListResp := []MemCapListResponse{}
+	err := s.DoCommand(ctx, memcapList, nil, &memcapListResp)
 	return memcapListResp, err
 }

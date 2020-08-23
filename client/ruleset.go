@@ -57,24 +57,24 @@ func (s *Socket) RulesetReloadNonBlockingCommand(ctx context.Context) (string, e
 
 // RulesetReloadTimeCommand gets reload time of ruleset reload
 // Not implemented in v3
-func (s *Socket) RulesetReloadTimeCommand(ctx context.Context) (*[]RulesetReloadTimeResponse, error) {
-	rulesetReloadTimeResp := &[]RulesetReloadTimeResponse{}
-	err := s.DoCommand(ctx, rulesetReloadTime, nil, rulesetReloadTimeResp)
+func (s *Socket) RulesetReloadTimeCommand(ctx context.Context) ([]RulesetReloadTimeResponse, error) {
+	rulesetReloadTimeResp := []RulesetReloadTimeResponse{}
+	err := s.DoCommand(ctx, rulesetReloadTime, nil, &rulesetReloadTimeResp)
 	return rulesetReloadTimeResp, err
 }
 
 // RulesetStatsCommand gets ruleset stats
 // Not implemented in v3
-func (s *Socket) RulesetStatsCommand(ctx context.Context) (*[]RulesetStatsResponse, error) {
-	rulesetStatsResp := &[]RulesetStatsResponse{}
-	err := s.DoCommand(ctx, rulesetStats, nil, rulesetStatsResp)
+func (s *Socket) RulesetStatsCommand(ctx context.Context) ([]RulesetStatsResponse, error) {
+	rulesetStatsResp := []RulesetStatsResponse{}
+	err := s.DoCommand(ctx, rulesetStats, nil, &rulesetStatsResp)
 	return rulesetStatsResp, err
 }
 
 // RulesetFailedRulesCommand does ruleset failed rules
 // Not implemented in v3
-func (s *Socket) RulesetFailedRulesCommand(ctx context.Context) (*[]RulesetFailedRulesResponse, error) {
-	rulesetFailedResp := &[]RulesetFailedRulesResponse{}
-	err := s.DoCommand(ctx, rulesetFailedRules, nil, rulesetFailedResp)
+func (s *Socket) RulesetFailedRulesCommand(ctx context.Context) ([]RulesetFailedRulesResponse, error) {
+	rulesetFailedResp := []RulesetFailedRulesResponse{}
+	err := s.DoCommand(ctx, rulesetFailedRules, nil, &rulesetFailedResp)
 	return rulesetFailedResp, err
 }

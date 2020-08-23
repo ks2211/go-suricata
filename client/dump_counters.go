@@ -7,10 +7,10 @@ const (
 )
 
 // DumpCountersCommand performs the dump-counters command
-func (s *Socket) DumpCountersCommand(ctx context.Context) (*DumpCountersResponse, error) {
+func (s *Socket) DumpCountersCommand(ctx context.Context) (DumpCountersResponse, error) {
 	// create and marshal the "dump-counters" socket message with no args
-	counters := &DumpCountersResponse{}
-	err := s.DoCommand(ctx, dumpCounters, nil, counters)
+	counters := DumpCountersResponse{}
+	err := s.DoCommand(ctx, dumpCounters, nil, &counters)
 	return counters, err
 }
 
